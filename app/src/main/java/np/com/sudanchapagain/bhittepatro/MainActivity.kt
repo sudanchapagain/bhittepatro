@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import np.com.sudanchapagain.bhittepatro.bikramSambat.BikramSambat
+import np.com.sudanchapagain.bhittepatro.calendar.PreviewBikramSambatCalendar
 import java.time.LocalDate
 
 class MainActivity : ComponentActivity() {
@@ -44,6 +45,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun bhittepatro(modifier: Modifier = Modifier, today: String, td: LocalDate) {
     Column(modifier = modifier.padding(16.dp)) {
@@ -55,22 +57,17 @@ fun bhittepatro(modifier: Modifier = Modifier, today: String, td: LocalDate) {
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "bhittepatro",
-                fontWeight = FontWeight.Black,
-                style = MaterialTheme.typography.headlineSmall
+                text = "bhittepatro", fontWeight = FontWeight.Black, style = MaterialTheme.typography.headlineSmall
             )
         }
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 36.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(top = 36.dp), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Today's Date",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleMedium
+                text = "Today's Date", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium
             )
             Text(
                 text = today,
@@ -79,10 +76,9 @@ fun bhittepatro(modifier: Modifier = Modifier, today: String, td: LocalDate) {
                 color = MaterialTheme.colorScheme.primary
             )
             Text(
-                text = td.toString(),
-                fontWeight = FontWeight.Normal,
-                style = MaterialTheme.typography.bodySmall
+                text = td.toString(), fontWeight = FontWeight.Normal, style = MaterialTheme.typography.bodySmall
             )
+            PreviewBikramSambatCalendar()
         }
     }
 }

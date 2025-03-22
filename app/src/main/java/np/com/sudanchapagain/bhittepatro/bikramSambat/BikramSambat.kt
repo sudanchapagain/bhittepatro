@@ -100,17 +100,24 @@ class BikramSambat {
     )
 
     private val nepaliMonths: List<String> = listOf(
-        "Baishak", "Jestha", "Ashad", "Shrawn", "Bhadra", "Ashwin",
-        "Kartik", "Mangshir", "Poush", "Magh", "Falgun", "Chaitra"
+        "Baishak",
+        "Jestha",
+        "Ashad",
+        "Shrawn",
+        "Bhadra",
+        "Ashwin",
+        "Kartik",
+        "Mangshir",
+        "Poush",
+        "Magh",
+        "Falgun",
+        "Chaitra"
     )
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private val englishStartDate = LocalDate.of(1944, 1, 1)
-    private val nepaliStartDate = Triple(2000, 9, 17)
+    private val englishStartDate = LocalDate.of(1943, 4, 14)
+    private val nepaliStartDate = Triple(2000, 1, 11)
 
-    /**
-     * Converts an English date (AD) to a Nepali (BS) date.
-     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun getNepaliDate(engDate: LocalDate): String {
         var totalEngDays = 0
@@ -143,22 +150,64 @@ class BikramSambat {
         return "$nepDay ${nepaliMonths[nepMonth - 1]}, $nepYear"
     }
 
-    /**
-     * Returns all available Bikram Sambat dates from 2000 to 2090.
-     */
-    fun getCalendar(): List<String> {
-        val allDates = mutableListOf<String>()
+    fun getNepaliMonthName(monthIndex: Int): String {
+        return nepaliMonths[monthIndex]
+    }
 
-        for (yearData in bsData) {
-            val nepYear = yearData[0]
-            for (monthIndex in 1..12) {
-                val daysInMonth = yearData[monthIndex]
-                for (day in 1..daysInMonth) {
-                    allDates.add("$day ${nepaliMonths[monthIndex - 1]}, $nepYear")
-                }
-            }
+    fun getYearMonthFromBsString(bsDate: String): Pair<Int, Int> {
+        val parts = bsDate.split(" ")
+        val monthName = parts[1].replace(",", "").trim()
+        val year = parts[2].toInt()
+
+        val monthIndex = nepaliMonths.indexOf(monthName)
+        return Pair(year, monthIndex)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getMonthDaysWithOffset(year: Int, monthIndex: Int): Pair<List<Int>, Int> {
+        val yearData = bsData.find { it[0] == year } ?: return Pair(emptyList(), 0)
+        val daysInMonth = yearData[monthIndex + 1]
+
+        val firstDayOfMonthBs = "1 ${nepaliMonths[monthIndex]}, $year"
+        val firstDayWeekIndex = getWeekdayOfBsDate(firstDayOfMonthBs)
+
+        val days = mutableListOf<Int>()
+        for (i in 1..daysInMonth) days.add(i)
+        return Pair(days, firstDayWeekIndex)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getEnglishDateFromBs(bsDate: String): LocalDate {
+        val parts = bsDate.split(" ")
+        println(parts)
+        if (parts.size != 3) throw IllegalArgumentException("Invalid BS date format")
+
+        val day = parts[0].toInt()
+        val monthName = parts[1].replace(",", "").trim()
+        val year = parts[2].toInt()
+
+        val monthIndex = nepaliMonths.indexOf(monthName) + 1
+        if (monthIndex == 0) throw IllegalArgumentException("Invalid Nepali month name")
+
+        var totalBsDays = 0
+        for (y in nepaliStartDate.first until year) {
+            val yearData = bsData.find { it[0] == y } ?: continue
+            totalBsDays += yearData.subList(1, 13).sum()
         }
 
-        return allDates
+        for (m in 1 until monthIndex) {
+            val yearData = bsData.find { it[0] == year } ?: throw IllegalArgumentException("Year not found")
+            totalBsDays += yearData[m]
+        }
+
+        totalBsDays += day - 1
+
+        return englishStartDate.plusDays(totalBsDays.toLong())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getWeekdayOfBsDate(bsDate: String): Int {
+        val engDate = getEnglishDateFromBs(bsDate)
+        return engDate.dayOfWeek.value % 7
     }
 }
