@@ -111,7 +111,6 @@ fun BikramSambatCalendar() {
     }
 }
 
-// **Preview**
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable

@@ -32,9 +32,6 @@ class MainActivity : ComponentActivity() {
         val td = LocalDate.now()
         val today = bikramSambat.getNepaliDate(td)
 
-        // TODO:
-        // render this into a calendar widget/component
-        // val allBsDates = bikramSambat.getCalendar()
         setContent {
             BhittepatroTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

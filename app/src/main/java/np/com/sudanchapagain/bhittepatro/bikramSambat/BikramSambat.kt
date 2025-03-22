@@ -116,7 +116,7 @@ class BikramSambat {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private val englishStartDate = LocalDate.of(1943, 4, 14)
-    private val nepaliStartDate = Triple(2000, 1, 11)
+    private val nepaliStartDate = Triple(2000, 1, 1)
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getNepaliDate(engDate: LocalDate): String {
