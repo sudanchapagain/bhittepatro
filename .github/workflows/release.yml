@@ -6,57 +6,6 @@ on:
       - "v*"
 
 jobs:
-  build-expo-android:
-    name: Build Expo Android APK
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-          cache-dependency-path: reactnative/package-lock.json
-
-      - name: Setup Expo CLI
-        run: npm install -g @expo/cli@latest eas-cli@latest
-
-      - name: Install dependencies
-        working-directory: ./reactnative
-        run: npm ci
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: "temurin"
-          java-version: "17"
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Create Expo local build
-        working-directory: ./reactnative
-        run: |
-          # Configure for local build
-          npx expo install --fix
-          npx expo prebuild --platform android
-
-      - name: Build Android APK
-        working-directory: ./reactnative
-        run: |
-          cd android
-          ./gradlew assembleRelease --no-daemon
-
-      - name: Upload Expo APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: expo-android-apk
-          path: reactnative/android/app/build/outputs/apk/release/*.apk
-          retention-days: 30
-
   build-kotlin-android:
     name: Build Kotlin Android APK
     runs-on: ubuntu-latest
@@ -101,18 +50,12 @@ jobs:
 
   create-release:
     name: Create GitHub Release
-    needs: [build-expo-android, build-kotlin-android]
+    needs: [build-kotlin-android]
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Download Expo APK
-        uses: actions/download-artifact@v4
-        with:
-          name: expo-android-apk
-          path: ./artifacts/expo/
 
       - name: Download Kotlin APK
         uses: actions/download-artifact@v4
@@ -125,8 +68,7 @@ jobs:
           # Get the tag name without 'refs/tags/' prefix
           TAG_NAME=${GITHUB_REF#refs/tags/}
 
-          # Find and rename APK files with descriptive names
-          find ./artifacts/expo/ -name "*.apk" -exec mv {} ./artifacts/bhittepatro-expo-${TAG_NAME}.apk \;
+          # Find and rename APK file with descriptive name
           find ./artifacts/kotlin/ -name "*.apk" -exec mv {} ./artifacts/bhittepatro-kotlin-${TAG_NAME}.apk \;
 
           # List files for verification
@@ -143,8 +85,7 @@ jobs:
           # Release ${TAG_NAME}
 
           ## Downloads
-          - bhittepatro-expo-${TAG_NAME}.apk: React Native version
-          - bhittepatro-kotlin-${TAG_NAME}.apk: Kotlin version
+          - bhittepatro-kotlin-${TAG_NAME}.apk
 
           Built automatically from commit: ${{ github.sha }}
           EOF
@@ -173,5 +114,4 @@ jobs:
         uses: geekyeggo/delete-artifact@v5
         with:
           name: |
-            expo-android-apk
             kotlin-android-apk

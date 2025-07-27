@@ -1,1 +1,0 @@
-export { BikramSambat } from "./BikramSambat";
