@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             BhittepatroTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    bhittepatro(modifier = Modifier.padding(innerPadding), today, td)
+                    Bhittepatro(modifier = Modifier.padding(innerPadding), today, td)
                 }
             }
         }
@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun bhittepatro(modifier: Modifier = Modifier, today: String, td: LocalDate) {
+fun Bhittepatro(modifier: Modifier = Modifier, today: String, td: LocalDate) {
     Column(modifier = modifier.padding(16.dp)) {
         Row(
             modifier = Modifier

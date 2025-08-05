@@ -30,7 +30,7 @@ fun BikramSambatCalendar() {
     val todayBs = bikramSambat.getNepaliDate(LocalDate.now())
     val (initialYear, initialMonth) = bikramSambat.getYearMonthFromBsString(todayBs)
 
-    var currentMonth by remember { mutableStateOf(initialMonth) }
+    var currentMonth by remember { mutableIntStateOf(initialMonth) }
     var currentYear by remember { mutableStateOf(initialYear) }
 
     Column(

@@ -31,14 +31,11 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun BhittepatroTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColors else LightColors
 
     MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
+        colorScheme = colorScheme, typography = Typography, content = content
     )
 }
