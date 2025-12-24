@@ -6,5 +6,5 @@
       <img style="box-shadow: none;border: 1px solid #959595;" src="https://sudanchapagain.com.np/assets/img/bhittepattro-current-2.jpg">
       <img style="box-shadow: none;border: 1px solid #959595;" src="https://sudanchapagain.com.np/assets/img/bhittepattro-current-1-dark.jpg">
     </div>
-    <img src="/assets/img/bhittepatro-v1.png">
+    <img src="https://sudanchapagain.com.np/assets/img/bhittepatro-v1.png">
 </div>
