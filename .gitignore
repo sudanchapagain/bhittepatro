@@ -1,3 +1,4 @@
+# OS X Finder
 .DS_Store
 .env*.local
 .env
@@ -24,3 +25,35 @@ crashlytics-build.properties
 build/
 release/
 debug/
+
+# Xcode per-user config
+*.mode1
+*.mode1v3
+*.mode2v3
+*.perspective
+*.perspectivev3
+*.pbxuser
+*.xcworkspace
+xcuserdata
+
+# Build products
+*.o
+*.LinkFileList
+*.hmap
+
+# Automatic backup files
+*~.nib/
+*.dat
+*.dep
+
+.kotlin
+**/build/
+!src/**/build/
+.externalNativeBuild
+.cxx
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
